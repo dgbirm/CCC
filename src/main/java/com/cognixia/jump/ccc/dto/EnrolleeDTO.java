@@ -1,11 +1,8 @@
 package com.cognixia.jump.ccc.dto;
 
-import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
-
-import javax.persistence.Column;
 
 import com.cognixia.jump.ccc.model.Dependent;
 

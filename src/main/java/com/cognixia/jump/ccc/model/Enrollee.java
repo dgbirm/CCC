@@ -9,6 +9,7 @@ package com.cognixia.jump.ccc.model;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -96,6 +97,26 @@ public class Enrollee implements Serializable, Model {
 	 */
 	public Enrollee() {}
 	
+	//Equals and hashCode
+	
+	@Override
+	public int hashCode() {
+		return Objects.hash(dob, firstName, id, lastName);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Enrollee other = (Enrollee) obj;
+		return Objects.equals(dob, other.dob) && Objects.equals(firstName, other.firstName)
+				&& Objects.equals(id, other.id) && Objects.equals(lastName, other.lastName);
+	}
+
 	//Getters and Setters
 	
 	/**

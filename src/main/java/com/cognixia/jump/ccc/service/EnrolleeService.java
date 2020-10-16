@@ -4,6 +4,8 @@ import java.time.LocalDate;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.cognixia.jump.ccc.model.Dependent;
@@ -42,6 +44,10 @@ public class EnrolleeService {
 		enrolleeRepo.save(newEnrollee);
 	}
 	
+	public void addEnrollee(Enrollee enrollee) {
+		enrolleeRepo.save(enrollee);
+	}
+	
 	//Add dependent to Enrollee
 	public void addDependent(Enrollee enrollee, Dependent newDependent) {
 		Optional<Enrollee> findEnrollee = enrolleeRepo.findById(enrollee.getId());
@@ -49,13 +55,25 @@ public class EnrolleeService {
 		
 		if (findEnrollee.isPresent() && findDependent.isPresent()) {
 			Enrollee enrolleeToUpdate = findEnrollee.get();
-			Dependent 
+			Dependent dependentToUpdate = findDependent.get();
+			
+			enrolleeToUpdate.getDependents().add(dependentToUpdate);
+			enrolleeRepo.save(enrolleeToUpdate);
 		}
 		else {
 			throw new IllegalArgumentException(
 					"Either the Enrollee or the Dependent given"
 					+ "was not found in the databse");
 		}
+	}
+	
+///////////////////////////////////////
+//Read
+///////////////////////////////////////
+	
+	public Iterable<Enrollee> getPagedEnrollees(int page, int size, String sorDir, String sort) {
+		PageRequest pRq = PageRequest.of(page, size, Sort.Direction.fromString(sorDir), sort);
+		Page<Enrollee> enrollees = enrolleeRepo.
 	}
 
 ///////////////////////////////////////
@@ -121,6 +139,41 @@ public class EnrolleeService {
 		}
 	}
 
-	
+///////////////////////////////////////
+// Delete
+///////////////////////////////////////
 
+	//Delete an Enrollee
+	public void deleteEnrollee(Long id) {
+		enrolleeRepo.deleteById(id);
+	}
+	
+	public void deleteEnrollee(Enrollee enrollee) {
+		enrolleeRepo.delete(enrollee);
+	}
+	
+	//Delete dependent from Enrollee
+	//Note: by setting the orphanRemoval attribute to true in the OneToMany
+	//annotation in the Enrollee entity definition, we ensure that removal
+	//of the depedent from the dependents set in enrollee directly leads to
+	//the deletion of the dependent itself, which is what we want.
+	public void deleteDependent(Enrollee enrollee, Dependent oldDependent) {
+		Optional<Enrollee> findEnrollee = enrolleeRepo.findById(enrollee.getId());
+		Optional<Dependent> findDependent = dependentRepo.findById(oldDependent.getId());
+		
+		if (findEnrollee.isPresent() && findDependent.isPresent()) {
+			Enrollee enrolleeToUpdate = findEnrollee.get();
+			Dependent dependentToUpdate = findDependent.get();
+			
+			enrolleeToUpdate.getDependents().remove(dependentToUpdate);
+			enrolleeRepo.save(enrolleeToUpdate);
+		}
+		else {
+			throw new IllegalArgumentException(
+					"Either the Enrollee or the Dependent given"
+					+ "was not found in the databse");
+		}
+	}
+	
+	
 }
