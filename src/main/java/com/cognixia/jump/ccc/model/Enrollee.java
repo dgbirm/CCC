@@ -45,6 +45,9 @@ public class Enrollee implements Serializable, Model {
 	@Column(name = "lastName", updatable = false, nullable = false, length = 25)
 	private String lastName;
 	
+	@Column(name = "hashWord", updatable = true, nullable = false, length = 60)
+	private String hashWord;
+	
 	/** The activation status. */
 	@Column(name = "activationStatus", updatable = true, nullable = false, columnDefinition = "BOOLEAN")
 	private Boolean activationStatus;
@@ -217,4 +220,24 @@ public class Enrollee implements Serializable, Model {
 	public synchronized String getLastName() {
 		return lastName;
 	}
+
+	/**
+	 * Gets the hash word.
+	 *
+	 * @return the hash word
+	 */
+	public synchronized String getHashWord() {
+		return hashWord;
+	}
+
+	/**
+	 * Sets the hash word.
+	 *
+	 * @param hashWord the new hash word
+	 */
+	public synchronized void setHashWord(String hashWord) {
+		this.hashWord = hashWord;
+	}
+	
+	
 }

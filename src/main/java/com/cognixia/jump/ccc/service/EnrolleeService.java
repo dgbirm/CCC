@@ -4,8 +4,6 @@ import java.time.LocalDate;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.cognixia.jump.ccc.model.Dependent;
@@ -68,13 +66,15 @@ public class EnrolleeService {
 	}
 	
 ///////////////////////////////////////
-//Read
+// Read
 ///////////////////////////////////////
 	
-	public Iterable<Enrollee> getPagedEnrollees(int page, int size, String sorDir, String sort) {
-		PageRequest pRq = PageRequest.of(page, size, Sort.Direction.fromString(sorDir), sort);
-		Page<Enrollee> enrollees = enrolleeRepo.
-	}
+//	public Iterable<Enrollee> getPagedEnrollees(int page, int size, String sorDir, String sort) {
+//		PageRequest pRq = PageRequest.of(page, size, Sort.Direction.fromString(sorDir), sort);
+//		Page<Enrollee> enrollees = enrolleeRepo.
+//	}
+	
+	
 
 ///////////////////////////////////////
 // Update
@@ -174,6 +174,5 @@ public class EnrolleeService {
 					+ "was not found in the databse");
 		}
 	}
-	
 	
 }
