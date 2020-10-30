@@ -8,7 +8,9 @@ package com.cognixia.jump.ccc.model;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.Collection;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Objects;
 import java.util.Set;
 
@@ -237,6 +239,27 @@ public class Enrollee implements Serializable, Model {
 	 */
 	public synchronized void setHashWord(String hashWord) {
 		this.hashWord = hashWord;
+	}
+
+	@Override
+	public String toString() {
+		final int maxLen = 10;
+		return "Enrollee [id=" + id + ", firstName=" + firstName + ", lastName=" + lastName + ", activationStatus="
+				+ activationStatus + ", dob=" + dob + ", phoneNumber=" + phoneNumber + ", dependents="
+				+ (dependents != null ? toString(dependents, maxLen) : null) + "]";
+	}
+
+	private String toString(Collection<?> collection, int maxLen) {
+		StringBuilder builder = new StringBuilder();
+		builder.append("[");
+		int i = 0;
+		for (Iterator<?> iterator = collection.iterator(); iterator.hasNext() && i < maxLen; i++) {
+			if (i > 0)
+				builder.append(", ");
+			builder.append(iterator.next());
+		}
+		builder.append("]");
+		return builder.toString();
 	}
 	
 	

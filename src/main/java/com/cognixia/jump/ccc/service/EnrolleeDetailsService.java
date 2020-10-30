@@ -16,12 +16,11 @@ import org.springframework.transaction.annotation.Transactional;
 import com.cognixia.jump.ccc.model.Enrollee;
 import com.cognixia.jump.ccc.repository.EnrolleeRepo;
 
-@Service("enrolleeDetailsService")
+@Service
 @Transactional
 public class EnrolleeDetailsService implements UserDetailsService {
 	
 	private static List<GrantedAuthority> authorities = new ArrayList<>();
-	
 	static {
 		authorities.add(new SimpleGrantedAuthority("ROLE_ENROLLEE"));	
 	}
@@ -36,12 +35,16 @@ public class EnrolleeDetailsService implements UserDetailsService {
 	@Override
 	public UserDetails loadUserByUsername(final String idAsString) throws UsernameNotFoundException {
 		try {
-			Optional<Enrollee> findEnrollee = enrolleRepo.findById(Long.parseLong(idAsString));
+			Optional<Enrollee> findEnrollee = enrolleRepo.findById(Long.parseLong(idAsString.strip()));
 			if(findEnrollee.isEmpty()) {
 				throw new UsernameNotFoundException("Enrollee not found");
 			}
 			return new User(idAsString, findEnrollee.get().getHashWord(), authorities);
-		} catch (Exception e) {
+		} catch (NumberFormatException e) {
+			throw new RuntimeException(e);
+		}
+		
+		catch (UsernameNotFoundException e) {
 			e.getMessage();
 			throw new RuntimeException(e);
 		}

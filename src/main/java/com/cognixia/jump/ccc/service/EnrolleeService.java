@@ -43,6 +43,7 @@ public class EnrolleeService {
 	}
 	
 	public void addEnrollee(Enrollee enrollee) {
+		System.out.println(enrollee);
 		enrolleeRepo.save(enrollee);
 	}
 	
